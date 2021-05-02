@@ -9,6 +9,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from pathlib import Path
+from scipy.stats import expon
 
 def main():
     # 타이틀
@@ -28,7 +29,7 @@ def main():
     end = col2.number_input('종료값', value=10)
     n = col3.number_input('개수', value=100)
   
-    # 시각화(1)
+    # 시각화 (Line plot)
     x = np.linspace(start, end, n)
     y = np.sin(x)
     y2 = np.cos(x)
@@ -91,6 +92,101 @@ def main():
         showgrid=False, #gridcolor='black', gridwidth=1,
     )
     st.plotly_chart(fig)
+
+    # 시각화 (Histogram)
+    col1, col2 = st.beta_columns(2)
+    param1 = col1.number_input('모수(X1)', value=10)
+    param2 = col2.number_input('모수(X2)', value=20)
+
+    np.random.seed(0)
+    X1 = expon(0, param1)
+    X2 = expon(0, param2)
+    sample1 = X1.rvs(10000)
+    sample2 = X2.rvs(10000)
+    x = np.linspace(0, 130, 200)
+    y1 = X1.pdf(x)
+    y2 = X2.pdf(x)
+
+    low_c = '#dd4124'
+    high_c = '#009473'
+    background_color = '#fcfcfc'
+    hovertemplate = """
+    %{x:,.2f}
+    """
+
+    fig = make_subplots(rows=1, cols=1, shared_xaxes=True)
+    fig.add_trace(go.Histogram(
+        x=sample1,
+        name='X1',
+        histnorm='probability',
+        marker_color=low_c,
+        marker_line_color='#323232',
+        marker_line_width=1,
+        xbins=dict(start=0, end=120, size=1),
+    ))
+    fig.add_trace(go.Scatter(
+        x=x, y=y1,
+        marker=dict(size=10, color='#323232'),
+        name='X1_pdf', mode='lines',
+        showlegend=False,
+    ))
+    fig.add_trace(go.Histogram(
+        x=sample2,
+        name='X2',
+        histnorm='probability',
+        marker_color=high_c,
+        marker_line_color='#323232',
+        marker_line_width=1,
+        xbins=dict(start=0, end=120, size=1),
+    ))
+    fig.add_trace(go.Scatter(
+        x=x, y=y2,
+        marker=dict(size=10, color='#323232'),
+        name='X2_pdf', mode='lines',
+        showlegend=False,
+    ))
+    fig.update_traces(
+        hovertemplate=hovertemplate,
+        opacity=0.75,
+    )
+    fig.update_layout(
+        barmode='overlay',
+        title=dict(text='<b>지수분포</b>', font_size=20, font_color='#323232', xanchor='center', yanchor='top', x=0.475, y=0.97),
+        margin=dict(l=40, r=40, b=40, t=60),
+        width=800,
+        height=400,
+        font_family='Malgun Gothic',
+        font_color='black',
+        plot_bgcolor=background_color,
+        paper_bgcolor=background_color,
+        legend_title='<b>확률변수</b>',
+        legend_title_font_size=17,
+        legend_font_size=15,
+        # showlegend=False,
+        legend=dict(yanchor='top', xanchor='left', y=1.1, x=0.85, bordercolor='#323232', borderwidth=0),
+        hoverlabel_align='left',
+    )
+    fig.update_xaxes(
+        title=dict(text='<b>x</b>', font_color='#323232', font_size=18, standoff=5),
+        tickfont=dict(size=15, family='Malgun Gothic', color='#323232'),
+        tickformat='.0f',
+        tickangle=0,
+        # dtick=1,
+        showline=False, #linecolor='#323232', linewidth=2,
+        zeroline=False, #zerolinewidth=2, zerolinecolor='black',
+        showgrid=False, #gridcolor='black', gridwidth=1,
+    )
+    fig.update_yaxes(
+        title=dict(text=r'<b>p(x)</b>', font_color='#323232', font_size=18, standoff=10),
+        tickfont=dict(size=15, family='Malgun Gothic', color='#323232'),
+        tickformat='.2f',
+        # dtick=0.5,
+        showline=False, #linecolor='#323232', linewidth=2,
+        zeroline=False, #zerolinewidth=2, zerolinecolor='black',
+        showgrid=False, #gridcolor='black', gridwidth=1,
+    )
+    st.plotly_chart(fig)
+
 
 if __name__ == '__main__':
     main()
