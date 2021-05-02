@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from pathlib import Path
 from scipy.stats import expon
+import plotly.figure_factory as ff
 
 def main():
     # 타이틀
@@ -41,7 +42,7 @@ def main():
     f(%{x:,.2f})=%{y:,.2f}
     """
 
-    fig = make_subplots(rows=1, cols=1, shared_xaxes=True)
+    fig = make_subplots(rows=1, cols=1, shared_xaxes=False)
     fig.add_trace(go.Scatter(
         x=x, y=y,
         marker=dict(size=1e-5, symbol='square', color=low_c, line=dict(width=0, color='#323232')),
@@ -114,7 +115,7 @@ def main():
     %{x:,.2f}
     """
 
-    fig = make_subplots(rows=1, cols=1, shared_xaxes=True)
+    fig = make_subplots(rows=1, cols=1, shared_xaxes=False)
     fig.add_trace(go.Histogram(
         x=sample1,
         name='X1',
@@ -195,6 +196,12 @@ def main():
         zeroline=False, #zerolinewidth=2, zerolinecolor='black',
         showgrid=False, #gridcolor='black', gridwidth=1,
     )
+    # fig = ff.create_distplot(
+    #     [sample1],
+    #     group_labels=['plot'],
+    #     curve_type='kde',
+    #     show_rug=False,
+    # )
     st.plotly_chart(fig)
 
 
