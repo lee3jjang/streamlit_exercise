@@ -166,13 +166,13 @@ def main():
         # showlegend=False,
         legend=dict(yanchor='top', xanchor='left', y=1.1, x=0.85, bordercolor='#323232', borderwidth=0),
         hoverlabel_align='left',
-        annotations=[
-            dict(x=60, y=0.05, ax=120, ay=-30,
-                showarrow=True, arrowcolor='#323232', arrowhead=4, arrowsize=1, arrowwidth=2,
-                font_color=high_c, font_size=15, font_family='Malgun Gothic', text='<b>주석</b>',
-                borderwidth=1, bordercolor='#ffffff', borderpad=10,
-            ),
-        ],
+        # annotations=[
+        #     dict(x=60, y=0.05, ax=120, ay=-30,
+        #         showarrow=True, arrowcolor='#323232', arrowhead=4, arrowsize=1, arrowwidth=2,
+        #         font_color=high_c, font_size=15, font_family='Malgun Gothic', text='<b>주석</b>',
+        #         borderwidth=1, bordercolor='#ffffff', borderpad=10,
+        #     ),
+        # ],
         # shapes=[
         #     dict(type='path', path='M 60,0.05 Q 40,0.04 20,0.05', line_color='#323232'),
         # ],
